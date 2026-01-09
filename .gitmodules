@@ -1,0 +1,6 @@
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/Elian-Canas/suplos_frontend.git
+[submodule "backend"]
+	path = backend
+	url = https://github.com/Elian-Canas/suplos_backend.git
