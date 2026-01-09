@@ -1,0 +1,52 @@
+version: '3.9'
+
+services:
+  php:
+    build:
+      context: ./backend
+    container_name: suplos_php
+    volumes:
+      - ./backend:/var/www
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - mysql
+
+  nginx:
+    image: nginx:alpine
+    container_name: suplos_nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./backend:/var/www
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+
+  vue:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VUE_APP_API_BASE_URL=http://192.168.1.32:8080
+    container_name: suplos_vue
+    ports:
+      - "8081:80"
+  mysql:
+    image: mysql:8.0
+    container_name: suplos_mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: suplos_db
+      MYSQL_USER: elian_test_suplos
+      MYSQL_PASSWORD: T8mQ2vNpLk4R7xY9
+      MYSQL_ROOT_PASSWORD: root
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./backend/db:/docker-entrypoint-initdb.d
+
+volumes:
+  mysql_data:
