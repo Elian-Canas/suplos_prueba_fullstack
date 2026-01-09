@@ -7,6 +7,7 @@ services:
     container_name: suplos_php
     volumes:
       - ./backend:/var/www
+      - /var/www/vendor
     env_file:
       - ./backend/.env
     depends_on:
@@ -28,7 +29,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        - VUE_APP_API_BASE_URL=http://192.168.1.32:8080
+        - VUE_APP_API_BASE_URL=http://192.168.1.22:8080
     container_name: suplos_vue
     ports:
       - "8081:80"
